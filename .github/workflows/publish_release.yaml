@@ -25,12 +25,12 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: :commons-jvm:test
+          arguments: :commons-jvm:test :commons-gradle:test
 
       - name: Publish to Maven
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: :commons-jvm:publish
+          arguments: :commons-jvm:publish :commons-gradle:publish
 
 
   build-mpp:

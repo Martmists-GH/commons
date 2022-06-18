@@ -16,9 +16,7 @@ allprojects {
 }
 
 subprojects {
-    if (this.name != "commons-gradle") {
-        apply(plugin = "com.martmists.commons")
-    }
+    apply(plugin = "com.martmists.commons")
 
     group = rootProject.group
     version = rootProject.version
