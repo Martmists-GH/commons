@@ -37,6 +37,7 @@ open class CommonsPlugin : Plugin<Project> {
                 generator.set(BuildConfigKotlinGenerator())
                 packageName("com.martmists.commons")
                 buildConfigField("String", "VERSION", "\"${rootProject.version}\"")
+                buildConfigField("String", "GROUP", "\"${rootProject.group}\"")
             }
 
             if (name.startsWith("commons-jvm") || name.startsWith("commons-gradle")) {
