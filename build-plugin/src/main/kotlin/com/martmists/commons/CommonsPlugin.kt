@@ -22,7 +22,7 @@ open class CommonsPlugin : Plugin<Project> {
         apply(plugin="com.github.gmazzo.buildconfig")
         apply(plugin="org.gradle.maven-publish")
 
-        if (name.startsWith("commons-jvm")) {
+        if (name.startsWith("commons-jvm") || name.startsWith("commons-gradle")) {
             apply(plugin="org.jetbrains.kotlin.jvm")
         } else {
             apply(plugin="org.jetbrains.kotlin.multiplatform")
@@ -39,7 +39,7 @@ open class CommonsPlugin : Plugin<Project> {
                 buildConfigField("String", "VERSION", "\"${rootProject.version}\"")
             }
 
-            if (name.startsWith("commons-jvm")) {
+            if (name.startsWith("commons-jvm") || name.startsWith("commons-gradle")) {
                 configure<KotlinJvmProjectExtension> {
 
                 }
@@ -63,7 +63,7 @@ open class CommonsPlugin : Plugin<Project> {
 
         afterEvaluate {
             with(the<ModuleConfigExtension>()) {
-                if (name.startsWith("commons-jvm")) {
+                if (name.startsWith("commons-jvm") || name.startsWith("commons-gradle")) {
                     project.setupJVM()
                 } else {
                     project.setupMPP()
@@ -73,7 +73,7 @@ open class CommonsPlugin : Plugin<Project> {
     }
 
     private fun Project.setupDependencies() {
-        if (name.startsWith("commons-jvm")) {
+        if (name.startsWith("commons-jvm") || name.startsWith("commons-gradle")) {
             dependencies.apply {
                 add("testImplementation", kotlin("test"))
             }
