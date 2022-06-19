@@ -13,6 +13,14 @@ open class ModuleConfigExtension {
     var host: String = System.getenv("GITHUB_TARGET_REPO") ?: "https://maven.martmists.com/releases"
     var version: String? = null
 
+    private fun Project.getPublishVersion(): String {
+        return if (!isRelease) {
+            this@ModuleConfigExtension.version ?: System.getenv("GITHUB_SHA") ?: this.version as String
+        } else {
+            this@ModuleConfigExtension.version ?: this.version as String
+        }
+    }
+
     fun Project.setupJVM() {
         setupCommon()
 
@@ -21,7 +29,7 @@ open class ModuleConfigExtension {
                 create<MavenPublication>("jvm") {
                     groupId = project.group as String
                     artifactId = project.name
-                    version = project.version as String
+                    version = getPublishVersion()
 
                     from(components.getByName("java"))
                 }
@@ -34,11 +42,7 @@ open class ModuleConfigExtension {
     }
 
     private fun Project.setupCommon() {
-        version = if (!isRelease) {
-            this@ModuleConfigExtension.version ?: System.getenv("GITHUB_SHA") ?: version
-        } else {
-            this@ModuleConfigExtension.version ?: version
-        }
+        version = getPublishVersion()
 
         configure<PublishingExtension> {
             repositories {
