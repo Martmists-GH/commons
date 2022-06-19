@@ -5,6 +5,7 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
+import org.gradle.kotlin.dsl.withType
 
 open class ModuleConfigExtension {
     var isRelease: Boolean = System.getenv("DEPLOY_TYPE") == "snapshot"
@@ -42,8 +43,6 @@ open class ModuleConfigExtension {
     }
 
     private fun Project.setupCommon() {
-        version = getPublishVersion()
-
         configure<PublishingExtension> {
             repositories {
                 maven {
@@ -53,6 +52,12 @@ open class ModuleConfigExtension {
                         username = this@ModuleConfigExtension.username
                         password = this@ModuleConfigExtension.token
                     }
+                }
+            }
+
+            publications {
+                withType<MavenPublication>() {
+                    version = getPublishVersion()
                 }
             }
         }
