@@ -8,7 +8,7 @@ import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.withType
 
 open class ModuleConfigExtension {
-    var isRelease: Boolean = System.getenv("DEPLOY_TYPE") == "snapshot"
+    var isRelease: Boolean = System.getenv("DEPLOY_TYPE") == "release"
     var username: String = "github-actions"
     var token: String = System.getenv("DEPLOY_KEY") ?: "NO_TOKEN"
     var host: String = System.getenv("GITHUB_TARGET_REPO") ?: "https://maven.martmists.com/releases"
