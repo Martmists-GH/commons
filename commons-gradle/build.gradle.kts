@@ -10,8 +10,8 @@ repositories {
 }
 
 dependencies {
-    implementation(gradleKotlinDsl())
-    implementation(kotlin("gradle-plugin"))
+    compileOnly(gradleKotlinDsl())
+    compileOnly(kotlin("gradle-plugin"))
 }
 
 tasks {
