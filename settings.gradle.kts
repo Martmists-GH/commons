@@ -9,6 +9,7 @@ val jvmModules = listOf(
     // Load order not important
     "config",
     "database",
+    "ktor",
 )
 val mppModules = listOf(
     // Load order important

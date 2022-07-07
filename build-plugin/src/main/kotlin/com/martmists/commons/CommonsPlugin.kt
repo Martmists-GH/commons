@@ -15,6 +15,26 @@ open class CommonsPlugin : Plugin<Project> {
             setupPlugins()
             setupExtensions()
             setupDependencies()
+            setupTasks()
+        }
+    }
+
+    private fun Project.setupTasks() {
+        if (name == "commons-jvm" || name == "commons-mpp") {
+            afterEvaluate {
+                tasks.forEach { t ->
+                    if (t.name in listOf(
+                            "build",
+                            "publish",
+                            "test",
+                            "allTests"
+                    )) {
+                        subprojects.forEach { p ->
+                            t.dependsOn(p.tasks.getByName(t.name))
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -77,8 +97,18 @@ open class CommonsPlugin : Plugin<Project> {
         if (name.startsWith("commons-jvm") || name.startsWith("commons-gradle")) {
             dependencies.apply {
                 add("testImplementation", kotlin("test"))
+                subprojects.forEach {
+                    add("api", it)
+                }
             }
         } else {
+            val commonMain by kotlinExtension.sourceSets.getting {
+                dependencies {
+                    subprojects.forEach {
+                        api(it)
+                    }
+                }
+            }
             val commonTest by kotlinExtension.sourceSets.getting {
                 dependencies {
                     implementation(kotlin("test"))
